@@ -1,0 +1,69 @@
+// guess - the game in which player should to guess a random number
+// player has only 10 times to guess the number
+
+package main
+
+import (
+	"bufio"
+	"fmt"
+	"log"
+	"math/rand"
+	"os"
+	"strconv"
+	"strings"
+)
+
+func main() {
+	// rand.Intn() генерируем случайное целое число
+	target := rand.Intn(100) + 1
+	fmt.Println("Welcome to the Guess Game!!!")
+	fmt.Println("In this game the player must to guess a random number.")
+	fmt.Println("Computer has chosen a random number between 1 and 100.")
+	fmt.Println("Can you guess it?")
+
+	// Создаем bufio.Reader для чтения ввода с клавиатуры.
+	reader := bufio.NewReader(os.Stdin)
+
+	// Объявляем переменную «success» до цикла, чтобы она оставалась в области видимости после выхода из цикла.
+	success := false
+
+	// используем цикл for для повторения игры
+	// В переменной «guesses» хранится количество сделанных попыток.
+	for guesses := 0; guesses < 10; guesses++ {
+		fmt.Println("You have", 10-guesses, "guesses left.")
+
+		// Запросить число.
+		fmt.Println("Make a guess: ")
+
+		//Прочитать данные, введенные поль-зователем до нажатия Enter.
+		input, err := reader.ReadString('\n')
+		if err != nil {
+			log.Fatal(err)
+		}
+		// Удаление символа новой строки.
+		input = strings.TrimSpace(input)
+		// Входная строка преоб-разуется в целое число.
+		guess, err := strconv.Atoi(input)
+		// Если произошла ошибка, про-грамма выводит сообщение и завершается.
+		if err != nil {
+			log.Fatal(err)
+		}
+		// проверка условий правильности угадывания числа
+		if guess < target {
+			fmt.Println("Oops. Your guess was LOW!")
+		} else if guess > target {
+			fmt.Println("Oops. Your guess was HIGH!")
+		} else {
+			// success = true - Если игрок угадал правильно, значит, выводить сообщение о проигрыше не нужно.
+			success = true
+			fmt.Println("Congratulations!!!\n You are WIN!!!")
+			// ключевое слово break прерывает программу если мы угадали правильное число
+			break
+		}
+	}
+	// Если игрок НЕ угадал (если переменная «success» содержит false)...
+	// ...вывести сообщение о проигрыше.
+	if !success {
+		fmt.Println("Sorry. You didn’t guess my number. It was: ", target)
+	}
+}
