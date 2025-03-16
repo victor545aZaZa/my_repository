@@ -1,5 +1,5 @@
-// guess - the game in which player should to guess a random number
-// player has only 10 times to guess the number
+// guess - игра в которой игрок должен угадать случайное число от 1 до 100
+// игрок имеет только 10 попыток
 
 package main
 
